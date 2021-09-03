@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SamuraiApp.Domain
 {
-    class Samurai
+    public class Samurai
     {
         public int MyProperty { get; set; }
         public string Name { get; set; }
