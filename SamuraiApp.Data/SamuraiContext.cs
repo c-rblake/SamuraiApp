@@ -17,5 +17,14 @@ namespace SamuraiApp.Data
         public DbSet<Quote> Quotes { get; set; }
 
         // In Ef core the Relationships are infered from the classes Samurai and Quotes.
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(
+                "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SamuraiAppData"
+                );
+            //base.OnConfiguring(optionsBuilder);
+        }
     }
+
 }
