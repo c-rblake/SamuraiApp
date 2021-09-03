@@ -8,7 +8,7 @@ namespace SamuraiApp.Domain
 {
     public class Quote
     {
-        public int MyProperty { get; set; }
+        public int Id { get; set; }
         public string Text { get; set; }
         public Samurai Samurai { get; set; } // One to One relationship REFERENCE PROPERTY
         public int SamuraiId { get; set; } // Foreign Key

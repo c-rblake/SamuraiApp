@@ -1,12 +1,40 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using SamuraiApp.Data;
+using SamuraiApp.Domain;
+using System;
+using System.Linq;
 
 namespace SamuraiApp.UI
 {
     class Program
     {
+        private static SamuraiContext _context = new SamuraiContext();
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            _context.Database.EnsureCreated(); //Check if Db exists else creates it on the fly
+            GetSamurais("Before Add:");
+            AddSamurai();
+            GetSamurais("After Add:");
+            Console.Write("Press any key...");
+            Console.ReadKey();
         }
+        private static void AddSamurai()
+        {
+            var samurai = new Samurai { Name = "Sampson" };
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+        }
+        private static void GetSamurais(string text)
+        {
+            var samurais = _context.Samurais.ToList(); //ToList here is a LINQ Query
+            Console.WriteLine($"{text}: Samurai count is {samurais.Count}");
+            foreach (var samurai in samurais)
+            {
+                Console.WriteLine(samurai.Name);
+            }
+        }
+
+
+
     }
 }

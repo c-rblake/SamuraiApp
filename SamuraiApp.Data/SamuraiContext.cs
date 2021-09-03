@@ -12,7 +12,7 @@ namespace SamuraiApp.Data
         // Ef Core DbContext does the work against our database/persistent data.
     {
         //Wrappers for Dealing with our Samurai and Qutoes Contexts
-        public DbSet<Samurai> Samurai { get; set; }
+        public DbSet<Samurai> Samurais { get; set; }
         
         public DbSet<Quote> Quotes { get; set; }
 
