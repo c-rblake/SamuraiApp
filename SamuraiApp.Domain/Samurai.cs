@@ -12,5 +12,7 @@ namespace SamuraiApp.Domain
         public string Name { get; set; }
         public List<Quote> Quotes { get; set; } = new List<Quote>(); // One to MANY
         // Or else it is NULL without new List<Quote>();
+        public List<Battle> Battles { get; set; } = new List<Battle>();
+
     }
 }
