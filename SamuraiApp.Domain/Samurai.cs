@@ -14,5 +14,8 @@ namespace SamuraiApp.Domain
         // Or else it is NULL without new List<Quote>();
         public List<Battle> Battles { get; set; } = new List<Battle>();
 
+        public Horse Horse { get; set; } // Could or could not be. Not instantiated here..
+
+
     }
 }
