@@ -22,8 +22,20 @@ namespace SamuraiApp.Data
         {
             optionsBuilder.UseSqlServer(
                 "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SamuraiAppData"
-                );
+                ); // Not a good way. Use appsettings.
             //base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Samurai>() // Start with Samurai 
+                .HasMany(s => s.Battles) // Has many battles.
+                .WithMany(b => b.Samurais) // Battles has many samurais
+                .UsingEntity<BattleSamurai>
+                (bs => bs.HasOne<Battle>().WithMany(),
+                bs => bs.HasOne<Samurai>().WithMany())
+                .Property(bs => bs.DateJoined) // Set the property to now time in sql.
+                .HasDefaultValueSql("getdate()");
         }
     }
 
