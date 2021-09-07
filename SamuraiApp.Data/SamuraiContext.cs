@@ -16,6 +16,8 @@ namespace SamuraiApp.Data
         
         public DbSet<Quote> Quotes { get; set; }
 
+        public DbSet<Battle> Battles { get; set; }
+
         // In Ef core the Relationships are infered from the classes Samurai and Quotes.
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

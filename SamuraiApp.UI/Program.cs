@@ -13,26 +13,53 @@ namespace SamuraiApp.UI
         {
             _context.Database.EnsureCreated(); //Check if Db exists else creates it on the fly
             GetSamurais("Before Add:");
-            AddSamurai();
+            //AddSamurai();
+            //AddVariousTypes();
+            AddSamuraisByName("Shimada", "Okamoto", "Kikuchio","Hayashida");
             GetSamurais("After Add:");
             Console.Write("Press any key...");
             Console.ReadKey();
         }
-        private static void AddSamurai()
+        //private static void AddSamurai()
+        //{
+        //    var samurai = new Samurai { Name = "Julie" };
+        //    _context.Samurais.Add(samurai);
+        //    _context.SaveChanges();
+        //}
+
+        private static void AddSamuraisByName(params string[] names)
         {
-            var samurai = new Samurai { Name = "Julie" };
-            _context.Samurais.Add(samurai);
+            foreach (var name in names)
+            {
+                _context.Samurais.Add(new Samurai { Name = name });
+            }
             _context.SaveChanges();
         }
         private static void GetSamurais(string text)
         {
-            var samurais = _context.Samurais.ToList(); //ToList here is a LINQ Query
+            //var samurais = _context.Samurais.ToList(); //ToList here is a LINQ Query
+            var samurais = _context.Samurais
+                .TagWith("ConsoleApp.Program.GetSamurais method")
+                .ToList();
             Console.WriteLine($"{text}: Samurai count is {samurais.Count}");
             foreach (var samurai in samurais)
             {
                 Console.WriteLine(samurai.Name);
             }
         }
+        // Using the Context .AddRange method for adding various things
+        // Bulk operation
+        //private static void AddVariousTypes()
+        //{
+        //    _context.Samurais.AddRange( // _coontext.AddRange() will also work
+        //        new Samurai { Name = "Shimada" },
+        //        new Samurai { Name = "Okamoto" });
+        //    _context.Battles.AddRange(
+        //       new Battle { Name = "Battle of Anegawa" },
+        //       new Battle { Name = "Battle of Nagashino" });
+        //    _context.SaveChanges();
+
+        //}
 
 
 
