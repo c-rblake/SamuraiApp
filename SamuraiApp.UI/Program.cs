@@ -19,6 +19,7 @@ namespace SamuraiApp.UI
             //GetSamurais("After Add:");
             //RetriveAndUpdateSamurai();
             //QueryFilters();
+            RetriveAndDeleteSamurai();
             Console.Write("Press any key...");
             Console.ReadKey();
             
@@ -57,6 +58,16 @@ namespace SamuraiApp.UI
             _context.Samurais.Add(new Samurai { Name = "Shino" }); //There is still only ONE database Call.
             _context.SaveChanges(); // Save changes
         }
+
+        public static void RetriveAndDeleteSamurai()
+        {
+            //First DbContext needs to Track what is to be deleted.
+            var samurai = _context.Samurais.Find(18);
+            _context.Samurais.Remove(samurai);
+            _context.SaveChanges();
+
+        }
+
 
         //private static void AddSamurai()
         //{
