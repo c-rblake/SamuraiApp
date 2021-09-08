@@ -11,13 +11,14 @@ namespace SamuraiApp.UI
         private static SamuraiContext _context = new SamuraiContext();
         static void Main(string[] args)
         {
-            _context.Database.EnsureCreated(); //Check if Db exists else creates it on the fly
-            GetSamurais("Before Add:");
+            //_context.Database.EnsureCreated(); //Check if Db exists else creates it on the fly
+            //GetSamurais("Before Add:");
             //AddSamurai();
             //AddVariousTypes();
             //AddSamuraisByName("Shimada", "Okamoto", "Kikuchio","Hayashida");
             //GetSamurais("After Add:");
-            QueryFilters();
+            //RetriveAndUpdateSamurai();
+            //QueryFilters();
             Console.Write("Press any key...");
             Console.ReadKey();
             
@@ -40,6 +41,21 @@ namespace SamuraiApp.UI
             Console.WriteLine($"{samurai4.Name} is samurai at index 2");
 
 
+        }
+
+        public static void RetriveAndUpdateSamurai()
+            //CONTEXT tracks changeds. 4 or more becomes a Batch update to the database.
+        {
+            //var samurai = _context.Samurais.FirstOrDefault();
+            //samurai.Name += "San";
+            var samurais = _context.Samurais.Skip(1).Take(4).ToList();
+            //foreach (var samurai in samurais)
+            //{
+            //    samurai.Name += "San";
+            //}
+            samurais.ForEach(s => s.Name += "San");
+            _context.Samurais.Add(new Samurai { Name = "Shino" }); //There is still only ONE database Call.
+            _context.SaveChanges(); // Save changes
         }
 
         //private static void AddSamurai()
