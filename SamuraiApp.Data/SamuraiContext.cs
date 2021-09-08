@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SamuraiApp.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace SamuraiApp.Data
 {
@@ -23,10 +24,17 @@ namespace SamuraiApp.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SamuraiAppData"
-                ); // Not a good way. Use appsettings.
+                "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SamuraiAppData" // Not a good way.Use appsettings.
+                )
+                /*.LogTo(Console.WriteLine);*/ // Very verbose.
+                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },
+                LogLevel.Information) // Just the SQL, limits the information from logger.
+                .EnableSensitiveDataLogging(); // See parameter names  NOT DEFAULT should be hidden
+
             //base.OnConfiguring(optionsBuilder);
         }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -15,11 +15,24 @@ namespace SamuraiApp.UI
             GetSamurais("Before Add:");
             //AddSamurai();
             //AddVariousTypes();
-            AddSamuraisByName("Shimada", "Okamoto", "Kikuchio","Hayashida");
-            GetSamurais("After Add:");
+            //AddSamuraisByName("Shimada", "Okamoto", "Kikuchio","Hayashida");
+            //GetSamurais("After Add:");
             Console.Write("Press any key...");
             Console.ReadKey();
+            QueryFilters();
         }
+
+        private static void QueryFilters()
+        {
+            // Not Parametrized Search Query
+            var samurais = _context.Samurais.Where(s => s.Name == "Sampson").ToList(); // ADD logging or this doesnt work well at ALL.
+            // Parametrized Search Query
+            var name = "Sampson";
+            //var samurais2 = _context.Samurais.FirstOrDefault(s => s.Name == name); Not parameterized also..
+            var samurai2 = _context.Samurais.Where(s => s.Name == name).ToList(); // A lot slower as well, Name is indexed maybe?
+            
+        }
+
         //private static void AddSamurai()
         //{
         //    var samurai = new Samurai { Name = "Julie" };
