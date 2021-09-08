@@ -17,9 +17,10 @@ namespace SamuraiApp.UI
             //AddVariousTypes();
             //AddSamuraisByName("Shimada", "Okamoto", "Kikuchio","Hayashida");
             //GetSamurais("After Add:");
+            QueryFilters();
             Console.Write("Press any key...");
             Console.ReadKey();
-            QueryFilters();
+            
         }
 
         private static void QueryFilters()
@@ -28,9 +29,15 @@ namespace SamuraiApp.UI
             var samurais = _context.Samurais.Where(s => s.Name == "Sampson").ToList(); // ADD logging or this doesnt work well at ALL.
             // Parametrized Search Query
             var name = "Sampson";
-            //var samurais2 = _context.Samurais.FirstOrDefault(s => s.Name == name); Not parameterized also..
-            var samurai2 = _context.Samurais.Where(s => s.Name == name).ToList(); // A lot slower as well, Name is indexed maybe?
-            
+            var samurais2 = _context.Samurais.FirstOrDefault(s => s.Name == name); 
+            //var samurai2 = _context.Samurais.Where(s => s.Name == name).ToList(); // A lot slower as well, Name is indexed maybe?
+            //SEARCH
+            var samurai3 = _context.Samurais.Where(s => EF.Functions.Like(s.Name, "%J%")).ToList();
+            //var samurai3 = _context.Samurais.Where(s => s.Name.Contains("%abc%")); // Same as above. but slower.
+
+
+
+
         }
 
         //private static void AddSamurai()
