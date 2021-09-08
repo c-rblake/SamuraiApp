@@ -19,10 +19,18 @@ namespace SamuraiApp.UI
             //GetSamurais("After Add:");
             //RetriveAndUpdateSamurai();
             //QueryFilters();
-            RetriveAndDeleteSamurai();
+            //RetriveAndDeleteSamurai();
+            //ContextAddVariousTypes();
+
+            QueryAndUpdateBattle_Disconnected();
             Console.Write("Press any key...");
             Console.ReadKey();
             
+        }
+
+        private static void QueryAndUpdateBattle_Disconnected()
+        {
+            throw new NotImplementedException();
         }
 
         private static void QueryFilters()
@@ -98,17 +106,25 @@ namespace SamuraiApp.UI
         }
         // Using the Context .AddRange method for adding various things
         // Bulk operation
-        //private static void AddVariousTypes()
-        //{
-        //    _context.Samurais.AddRange( // _coontext.AddRange() will also work
-        //        new Samurai { Name = "Shimada" },
-        //        new Samurai { Name = "Okamoto" });
-        //    _context.Battles.AddRange(
-        //       new Battle { Name = "Battle of Anegawa" },
-        //       new Battle { Name = "Battle of Nagashino" });
-        //    _context.SaveChanges();
+        private static void AddVariousTypes()
+        {
+            _context.Samurais.AddRange( // _coontext.AddRange() will also work
+                new Samurai { Name = "Shimada" },
+                new Samurai { Name = "Okamoto" });
+            _context.Battles.AddRange(
+               new Battle { Name = "Battle of Anegawa" },
+               new Battle { Name = "Battle of Nagashino" });
+            _context.SaveChanges();
 
-        //}
+        }
+        private static void ContextAddVariousTypes()
+        {
+            _context.AddRange(
+            new Battle { Name = "Battle Master" },
+            new Battle { Name = "Battle of the Kiwi" });
+            _context.SaveChanges();
+        }
+
 
 
 
