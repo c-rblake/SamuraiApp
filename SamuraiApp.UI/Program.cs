@@ -29,13 +29,15 @@ namespace SamuraiApp.UI
             var samurais = _context.Samurais.Where(s => s.Name == "Sampson").ToList(); // ADD logging or this doesnt work well at ALL.
             // Parametrized Search Query
             var name = "Sampson";
-            var samurais2 = _context.Samurais.FirstOrDefault(s => s.Name == name); 
+            var samurais2 = _context.Samurais.FirstOrDefault(s => s.Name == name); //SAMURAI OBJECT not list
             //var samurai2 = _context.Samurais.Where(s => s.Name == name).ToList(); // A lot slower as well, Name is indexed maybe?
             //SEARCH
             var samurai3 = _context.Samurais.Where(s => EF.Functions.Like(s.Name, "%J%")).ToList();
             //var samurai3 = _context.Samurais.Where(s => s.Name.Contains("%abc%")); // Same as above. but slower.
 
-
+            //DB set Method to find ID instead of First or Default on ID
+            var samurai4 = _context.Samurais.Find(2); // Finds samurai at index 2.
+            Console.WriteLine($"{samurai4.Name} is samurai at index 2");
 
 
         }
