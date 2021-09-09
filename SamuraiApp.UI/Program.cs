@@ -28,9 +28,18 @@ namespace SamuraiApp.UI
             //QueryAndUpdateBattle_Disconnected();
             //AddQuoteToExistingSamuraiWhileTracked();
             //AddQuoteToExistingSamuraiNotTracked();
+            ForeignKey_AddQuoteToExistingSamuraiNotTracked();
             Console.Write("Press any key...");
             Console.ReadKey();
             
+        }
+
+        private static void ForeignKey_AddQuoteToExistingSamuraiNotTracked(int samuraiId = 2)
+        {
+            var quote = new Quote { Text = "Thanks for dinner!", SamuraiId = samuraiId };
+            using var newContext = new SamuraiContext(); // Disposed when variable is out of scope. LN 43 here.
+            newContext.Quotes.Add(quote);
+            newContext.SaveChanges();
         }
 
         private static void AddQuoteToExistingSamuraiNotTracked(int id = 2)
