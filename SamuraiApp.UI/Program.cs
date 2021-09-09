@@ -10,6 +10,8 @@ namespace SamuraiApp.UI
     class Program
     {
         private static SamuraiContext _context = new SamuraiContext();
+        // EF core Will not Track see in Quick Watch
+        private static SamuraiContext _contextNT = new SamuraiContextNoTracking();
         static void Main(string[] args)
         {
             //_context.Database.EnsureCreated(); //Check if Db exists else creates it on the fly
@@ -22,11 +24,49 @@ namespace SamuraiApp.UI
             //QueryFilters();
             //RetriveAndDeleteSamurai();
             //ContextAddVariousTypes();
-
-            QueryAndUpdateBattle_Disconnected();
+            //InsertNewSamuraiWithAQuote();
+            //QueryAndUpdateBattle_Disconnected();
+            //AddQuoteToExistingSamuraiWhileTracked();
+            //AddQuoteToExistingSamuraiNotTracked();
             Console.Write("Press any key...");
             Console.ReadKey();
             
+        }
+
+        private static void AddQuoteToExistingSamuraiNotTracked(int id = 2)
+        {
+            var samurai = _context.Samurais.Find(id);
+            samurai.Quotes.Add(new Quote
+            { Text = " Now that I have saved you, will you feed me dinner?" });
+
+            using (var newContext = new SamuraiContext()) // Builds and dismantels
+            {
+                newContext.Samurais.Attach(samurai);
+                newContext.SaveChanges();
+            }
+        }
+
+        private static void AddQuoteToExistingSamuraiWhileTracked()
+        {
+            var samurai = _context.Samurais.FirstOrDefault();
+            samurai.Quotes.Add(new Quote
+            { Text = "I bet you are happy that I have saved you" });
+
+            _context.SaveChanges();
+        }
+
+        private static void InsertNewSamuraiWithAQuote()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Kambei Shimada",
+                Quotes = new List<Quote>
+                {
+                    new Quote {Text = "I've come to save you"}
+                }
+            };
+            _context.Samurais.Add(samurai); //Needs to Track this samurai
+            _context.SaveChanges();
         }
 
         private static void QueryAndUpdateBattle_Disconnected()
