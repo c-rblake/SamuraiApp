@@ -2,6 +2,7 @@
 using SamuraiApp.Data;
 using SamuraiApp.Domain;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SamuraiApp.UI
@@ -29,8 +30,24 @@ namespace SamuraiApp.UI
         }
 
         private static void QueryAndUpdateBattle_Disconnected()
+            //Simulates a Disconnected Scenario. One context load, one context saves.
         {
-            throw new NotImplementedException();
+            List<Battle> disconnectedBattles;
+            using (var context1=new SamuraiContext())
+            {
+                disconnectedBattles = _context.Battles.ToList();
+            }
+            disconnectedBattles.ForEach(b =>
+            {
+                b.StartDate = new DateTime(1570, 01, 01);
+                b.EndDate = new DateTime(1570, 12, 01);
+            });
+            using (var context2 = new SamuraiContext())
+            {
+                context2.UpdateRange(disconnectedBattles);
+                context2.SaveChanges();
+            }
+
         }
 
         private static void QueryFilters()
