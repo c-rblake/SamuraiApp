@@ -31,15 +31,25 @@ namespace SamuraiApp.UI
             //ForeignKey_AddQuoteToExistingSamuraiNotTracked(); GOOD
             //EagerLoadSamuraiWithQuotes(); //GOOD ALL OR FILTERED WITH INCLUDE
             //ProjectSomeProperties();
-            ProjectSamuraisWithQuotes(); // Filter, create anynomous class with aggregate(count) Owner + Like Vehicles
-            ExplicitLoadQuotes(); // Load an object then load related Objects (Tables or singles) Owner then Vehicles, Membership
+            //ProjectSamuraisWithQuotes(); // Filter, create anynomous class with aggregate(count) Owner + Like Vehicles
+            //ExplicitLoadQuotes(); // Load an object then load related Objects (Tables or singles) Owner then Vehicles, Membership. WORK ON ONE OBJECT ONLY
+            FilteringWithRelatedData(); // Does not include the table filtered on. 
             Console.Write("Press any key...");
             Console.ReadKey();
             
         }
 
+        private static void FilteringWithRelatedData()
+        {
+            //DOES NOT INCLUDE THE QUOTES
+            var samurais = _context.Samurais
+                .Where(s => s.Quotes.Any(q => q.Text.Contains("happy")))
+                .ToList();
+        }
+
         private static void ExplicitLoadQuotes()
         {
+            //WORKs ON ONE OBJECT ONLY
             _context.Set<Horse>().Add(new Horse { SamuraiId = 1, Name = "Mr Ed" });
             _context.SaveChanges();
             _context.ChangeTracker.Clear();
