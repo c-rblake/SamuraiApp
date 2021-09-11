@@ -29,12 +29,24 @@ namespace SamuraiApp.UI
             //AddQuoteToExistingSamuraiWhileTracked();
             //AddQuoteToExistingSamuraiNotTracked();
             //ForeignKey_AddQuoteToExistingSamuraiNotTracked(); GOOD
-            EagerLoadSamuraiWithQuotes(); //GOOD ALL OR FILTERED WITH INCLUDE
-            ProjectSomeProperties();
+            //EagerLoadSamuraiWithQuotes(); //GOOD ALL OR FILTERED WITH INCLUDE
+            //ProjectSomeProperties();
             ProjectSamuraisWithQuotes(); // Filter, create anynomous class with aggregate(count) Owner + Like Vehicles
+            ExplicitLoadQuotes(); // Load an object then load related Objects (Tables or singles) Owner then Vehicles, Membership
             Console.Write("Press any key...");
             Console.ReadKey();
             
+        }
+
+        private static void ExplicitLoadQuotes()
+        {
+            _context.Set<Horse>().Add(new Horse { SamuraiId = 1, Name = "Mr Ed" });
+            _context.SaveChanges();
+            _context.ChangeTracker.Clear();
+            //-----------------------------
+            var samurai = _context.Samurais.Find(1); // Samurai is now IN MEMORY
+            _context.Entry(samurai).Collection(s => s.Quotes).Load();
+            _context.Entry(samurai).Reference(s => s.Horse).Load();
         }
 
         private static void ProjectSamuraisWithQuotes()
@@ -56,7 +68,7 @@ namespace SamuraiApp.UI
                     HappyQuotes = s.Quotes.Where(q => q.Text.Contains("happy"))
                 }).ToList();
 
-            var firstsamurai = samuraiANDFilteredQuotes[0].Samurai
+            //var firstsamurai = samuraiANDFilteredQuotes[0].Samurai.Name += " The happiest";
         }
 
         private static void ProjectSomeProperties()
@@ -75,7 +87,7 @@ namespace SamuraiApp.UI
 
             var filterSamurai = _context.Samurais.FirstOrDefault(s => s.Id == 1);
             // Get filtered Samurai and Quotes by Quering quotes?
-            var filterQuotesSamurai = _context.Quotes.Include(q => q.Samurai.Id == 1).ToList();
+            var filterQuotesSamurai = _context.Quotes.Include(q => q.Samurai).ToList();
         }
 
         private static void ForeignKey_AddQuoteToExistingSamuraiNotTracked(int samuraiId = 2)
