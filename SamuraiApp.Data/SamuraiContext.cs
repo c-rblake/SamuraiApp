@@ -27,7 +27,7 @@ namespace SamuraiApp.Data
                 "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SamuraiAppData" // Not a good way.Use appsettings.
                 )
                 /*.LogTo(Console.WriteLine);*/ // Very verbose.
-                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },
+                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, //, DbLoggerCategory.Database.Transaction.Name },
                 LogLevel.Information) // Just the SQL, limits the information from logger.
                 .EnableSensitiveDataLogging(); // See parameter names  NOT DEFAULT should be hidden
 
