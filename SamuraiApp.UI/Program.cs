@@ -36,9 +36,31 @@ namespace SamuraiApp.UI
             FilteringWithRelatedData(); // Does not include the table filtered on. 
             //ModifyingRelatedDataWhenTracked(); // And how Nav propreties reference and collections + nested looks like
             //ModifyingRelatedDataWhenNOTTracked();
+            AddingNewSamuraiToAnExisingBattle();
+            ReturnOneBattleWithSamurais(); // ONE => FIRSTORDEFAULT
+            ReturnALLBattlesWithSamurais();
             Console.Write("Press any key...");
             Console.ReadKey();
             
+        }
+
+        private static void ReturnALLBattlesWithSamurais()
+        {
+            var battles = _context.Battles.Include(b => b.Samurais).ToList();
+        }
+
+        private static void ReturnOneBattleWithSamurais()
+        {
+            var battle = _context.Battles.Include(b => b.Samurais).FirstOrDefault(); // A battle
+            var specificBattle = _context.Battles.Include(b => b.Samurais).FirstOrDefault(b => b.BattleId == 2);
+
+        }
+
+        private static void AddingNewSamuraiToAnExisingBattle()
+        {
+            var battle = _context.Battles.FirstOrDefault();
+            battle.Samurais.Add(new Samurai { Name = "Takeda Shingen"});
+            _context.SaveChanges();
         }
 
         private static void ModifyingRelatedDataWhenNOTTracked()
