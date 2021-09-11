@@ -24,14 +24,58 @@ namespace SamuraiApp.UI
             //QueryFilters();
             //RetriveAndDeleteSamurai();
             //ContextAddVariousTypes();
-            //InsertNewSamuraiWithAQuote();
+            //InsertNewSamuraiWithAQuote(); // Like an Owner with a Membership
             //QueryAndUpdateBattle_Disconnected();
             //AddQuoteToExistingSamuraiWhileTracked();
             //AddQuoteToExistingSamuraiNotTracked();
-            ForeignKey_AddQuoteToExistingSamuraiNotTracked();
+            //ForeignKey_AddQuoteToExistingSamuraiNotTracked(); GOOD
+            EagerLoadSamuraiWithQuotes(); //GOOD ALL OR FILTERED WITH INCLUDE
+            ProjectSomeProperties();
+            ProjectSamuraisWithQuotes(); // Filter, create anynomous class with aggregate(count) Owner + Like Vehicles
             Console.Write("Press any key...");
             Console.ReadKey();
             
+        }
+
+        private static void ProjectSamuraisWithQuotes()
+        {  // AGGREGATE Owner + Vehicles
+            //var somePropsWithQuotes = _context.Samurais
+            //    .Select(s => new
+            //    {
+            //        s.Id, s.Name, s.Quotes.Count 
+            //    }).ToList();
+
+            // SOME SAMURAI PROPERTIES SELECTED
+            //var somePropsWithQuotes = _context.Samurais 
+            //    .Select(s => new { s.Id, s.Name, HappyQuotes = s.Quotes
+            //    .Where(q => q.Text.Contains("happy")) }).ToList();
+
+            // ALL SAMURAI SELECTED anynously and Filtered
+            var samuraiANDFilteredQuotes = _context.Samurais
+                .Select(s => new { Samurai = s,
+                    HappyQuotes = s.Quotes.Where(q => q.Text.Contains("happy"))
+                }).ToList();
+
+            var firstsamurai = samuraiANDFilteredQuotes[0].Samurai
+        }
+
+        private static void ProjectSomeProperties()
+            //Leverage NEW keyword to get anything
+        {
+            var someProperties = _context.Samurais.Select(s => new { s.Id, s.Name }).ToList(); //Anynomous type
+        }
+
+
+        private static void EagerLoadSamuraiWithQuotes()
+        {
+            var samuraiWithQuotes = _context.Samurais.Include(s => s.Quotes).ToList(); // Loads all Samurai + Quotes
+
+            // INCLUDE AND FILTER.
+            var filterInclude = _context.Samurais.Include(s => s.Quotes.Where(q =>q.Text.Contains("Thanks"))).ToList();
+
+            var filterSamurai = _context.Samurais.FirstOrDefault(s => s.Id == 1);
+            // Get filtered Samurai and Quotes by Quering quotes?
+            var filterQuotesSamurai = _context.Quotes.Include(q => q.Samurai.Id == 1).ToList();
         }
 
         private static void ForeignKey_AddQuoteToExistingSamuraiNotTracked(int samuraiId = 2)
